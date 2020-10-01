@@ -2,6 +2,10 @@
 
 #define	IN	1
 #define	OUT	2
+#define HIST_WIDTH	20
+
+
+void printHorizontal(int nlength[20]);
 
 int main() {
 	// words of 20 or more counted together
@@ -39,6 +43,32 @@ int main() {
 
 	for (i = 0; i < 20; i++)
 		printf(" %d", nlength[i]);
-	
+
+	printHorizontal(nlength);
+		
 	return 0;
 }
+
+
+void printHorizontal(int nlength[20]) {
+	int maxLength = 0;
+
+	int i;
+	for (i = 0; i < 20; ++i)
+		if (nlength[i] > maxLength)
+			maxLength = nlength[i];
+
+	if (maxLength == 0)
+		return;
+
+	
+	for (i = 0; i < 20; ++i) {
+		printf("\n%d: ", i + 1);
+		int normalizedLength = (float) HIST_WIDTH * ((float) nlength[i] / maxLength);
+		printf("\n%d\n", normalizedLength);
+//		for (int i = 0; i < normalizedLength; i++)
+//			putchar('-');
+	}
+
+}
+	
