@@ -1,0 +1,14 @@
+Please print this, but // this is a comment, ignore
+
+Now we can have "Comment characters like // or /* inside a string which should print */"
+
+But quotes in a /* comment should be "slashed"
+multiline comments should be ignored 
+as 
+well */ hi
+
+Now '/' is a character constant that might look like the start of a comment, but it's not so you should see all of this.
+
+Same with '"'--it is not the start of a quote, so // this comment should be hidden!
+
+And escape characters "Should \"always be printed and not change the quote status so /* you should see this */"
