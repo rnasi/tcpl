@@ -6,6 +6,7 @@
 int getLine(char line[], int limit);
 int wrapLine(char line[], int length, int screenWidth, int maxLength);
 
+// Wraps lines at screen width. Ignores tabs--if you want to account for them, pair with detab/entab.
 int main() {
 	char line[MAX_WIDTH];
 	int length;
