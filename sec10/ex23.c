@@ -10,6 +10,7 @@ int main() {
 	int string = OUTSIDE;
 	int comment = OUTSIDE;
 	int controlChar = OUTSIDE;
+	int charConst = OUTSIDE;
 
 	int c;
 
@@ -19,7 +20,13 @@ int main() {
 			controlChar = OUTSIDE;
 		} else if (c == '\\' && comment == OUTSIDE) {
 			controlChar = INSIDE;
-		} else if (c == '"' && comment == OUTSIDE) {
+		} else if (c == '\'' && comment == OUTSIDE && string == OUTSIDE) {
+			if (charConst == INSIDE)
+				charConst = OUTSIDE;
+			else
+				charConst = INSIDE;
+			putchar(c);
+		} else if (c == '"' && comment == OUTSIDE && charConst == OUTSIDE) {
 			if (string == INSIDE)
 				string = OUTSIDE;
 			else
