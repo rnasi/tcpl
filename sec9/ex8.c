@@ -4,7 +4,7 @@
 #define N	3	// will yield 010 ... 10110 when right rotated
 			// 32-bit: 01000000000000000000000000010110 = 1073741846
 
-int rightrot(const int, const int);
+int rightrot(int, int);
 int intsize();
 
 // Write a function `rightrot(x,n)` that returns the value of the integer `x` rotated to the right
@@ -28,7 +28,7 @@ int intsize() {
 // rightrot:	rotates `x` to the right by `n` positions
 // assumptions:	`n` is a sensible positive integet
 // return:	rotated value
-int rightrot(const int x, const int n) {
+int rightrot(int x, int n) {
 	return (x >> n)				// left part
 		+ (x << (intsize() - n));	// right part
 }
