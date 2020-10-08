@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+// replaces characters with escaped sequences
 int main() {
 	int c;
 
@@ -14,10 +15,9 @@ int main() {
 			case '\\':
 				printf("\\\\");
 				break;
-
-
-
-
-
-
+			default:
+				putchar(c);
+				break;
+		}
+	}
 }
