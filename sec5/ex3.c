@@ -21,19 +21,41 @@ int main() {
 	char str6[] = "This has z-z which is just a \'z\'";
 	char str7[] = "This has a-c-f which is weird";
 
+	char str8[] = "This has 0-9";
+	char str9[] = "This has 0-5 which is less";
+	char str10[] = "This has 3-7 which starts later";
+	char str11[] = "This has 0-0 which is just a \'0\'";
+	char str12[] = "This has 9-9 which is just a \'9\'";
+	char str13[] = "This has 2-5-6 which is weird";
+
+	char str14[] = "This one has a lot of different things like a-z, 0-9, maybe some e-y and 3-3-6-7-7.";
 
 	
 	printExpanded(str1);
+	printExpanded(str2);
 	printExpanded(str2);
 	printExpanded(str3);
 	printExpanded(str4);
 	printExpanded(str5);
 	printExpanded(str6);
 	printExpanded(str7);
+	printExpanded(str8);
+	printExpanded(str9);
+	printExpanded(str10);
+	printExpanded(str11);
+	printExpanded(str12);
+	printExpanded(str13);
+	printExpanded(str14);
 	
 
 
 	return 0;
+}
+
+void copyRange(char start, char end, const char input[], char output[], int iIn, int iOut) {
+
+
+
 }
 
 //expand:	expands shorthand notations (e.g. a-z) in `str1` into `str2`
@@ -44,6 +66,8 @@ void expand(const char input[], char output[]) {
 
 	for (iIn = 0, iOut = 0; iIn < inLen - 2; iIn++, iOut++) {
 
+
+
 		// Letter range found
 		if (input[iIn] >= 'a'  && input[iIn] <= 'z'
 				&& input[iIn + 1] == '-'
@@ -52,6 +76,19 @@ void expand(const char input[], char output[]) {
 			// Start at first letter, go to last letter (not inclusive)
 			for (j = input[iIn] - 'a'; j < input[iIn + 2] - 'a'; iOut++, j++)
 				output[iOut] = 'a' + j;
+			// Skip '-' in input
+			iIn ++;
+			// Output index was incremented one too many times as a result of the previous loop
+			iOut--;
+
+		// Number range found
+		} else if (input[iIn] >= '0'  && input[iIn] <= '9'
+				&& input[iIn + 1] == '-'
+				&& input[iIn + 2] >= input[iIn] && input[iIn + 2] <= '9') {
+			
+			// Start at first letter, go to last letter (not inclusive)
+			for (j = input[iIn] - '0'; j < input[iIn + 2] - '0'; iOut++, j++)
+				output[iOut] = '0' + j;
 			// Skip '-' in input
 			iIn ++;
 			// Output index was incremented one too many times as a result of the previous loop
