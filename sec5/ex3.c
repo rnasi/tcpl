@@ -12,7 +12,12 @@ void printExpanded(const char str[]) {
 	printf("\"%s\" expanded is: \"%s\"\n", str, out);
 }
 
+// Write a function `expand(s1,s2)` that expands shorthand notations like a-z in the string `s1` 
+// into the equivalent complete list abc...xyz in `s2`. Allow for letters of either case and digits,
+// and be prepared to handle cases like a-b-c and a-z0-9 and -a-z. Arrange that a leading or 
+// trailing - is taken literally. 
 int main() {
+	// Test cases
 	char str1[] = "This has nothing";
 	char str2[] = "This has a-z";
 	char str3[] = "This has a-l which is less";
@@ -29,7 +34,6 @@ int main() {
 	char str13[] = "This has 2-5-6 which is weird";
 
 	char str14[] = "This one has a lot of different things like a-z, A-Z, 0-9, maybe some e-y and 3-3-6-7-7.";
-
 	
 	printExpanded(str1);
 	printExpanded(str2);
@@ -46,15 +50,20 @@ int main() {
 	printExpanded(str13);
 	printExpanded(str14);
 	
-
-
 	return 0;
 }
 
-//copyRange:	expands a shorhanded char range defined as `start`-`end` if present at iIn
+//expandRange:	Expands a single character range shorthand.
+//		Specifically, if a shorthand with start and end characters between `start` and `end`
+//		is found at `input[iIn]`, it is expanded into `output` starting at `iOut`. Does
+//		nothing if no matching shorthand found.
 //assumptions:	`output` is big enough
-//return:	new value for `iOut` if char shorthand is found at `input[iIn]`; 0 otherwise
-int copyRange(char start, char end, const char input[], char output[], int iIn, int iOut) {
+//		iIn < strlen(input) - 2
+//return:	if a char shorthand is found at `input[iIn]`:
+//			index of the last character in `output` after expansion
+//		otherwise:
+//			0
+int expandRange(char start, char end, const char input[], char output[], int iIn, int iOut) {
 	int j;
 	if (input[iIn] >= start  && input[iIn] <= end
 			&& input[iIn + 1] == '-'
@@ -64,34 +73,36 @@ int copyRange(char start, char end, const char input[], char output[], int iIn, 
 		for (j = input[iIn] - start; j < input[iIn + 2] - start; iOut++, j++)
 			output[iOut] = start + j;
 
-		// Above loop increments iOut one too many times
+		// Above loop increments iOut one time without adding a character
 		return iOut - 1;
 	}
 
 	return 0;
 }
 
-//expand:	expands shorthand notations (e.g. a-z) in `str1` into `str2`
-//assumptions:	`str2` is big enough
+//expand:	Copies `input` into `output`, expanding any character range shorthand notations of
+//		letters or digits (e.g. a-z, B-E, 3-7 -> abc ... z, BCDE, 34567)
+//assumptions:	`output` is big enough
 void expand(const char input[], char output[]) {
-	int iIn, iOut, j;
+	// Indices for `input` and `output`
+	int iIn, iOut;
 	int inLen = strlen(input);
 
 	for (iIn = 0, iOut = 0; iIn < inLen - 2; iIn++, iOut++) {
-		int shorthand;
-		// Lower case letter range shorthand found
-		if ((shorthand = copyRange('a', 'z', input, output, iIn, iOut))) {
+		int shorthandFound;
+		// Lower case letter range shorthand
+		if ((shorthandFound = expandRange('a', 'z', input, output, iIn, iOut))) {
 			// Shorthand found--advance iOut
-			iOut = shorthand;
+			iOut = shorthandFound;
 			// skip '-' in input
 			iIn++;
 		// Upper case letter range
-		} else if ((shorthand = copyRange('A', 'Z', input, output, iIn, iOut))) {
-			iOut = shorthand;
+		} else if ((shorthandFound = expandRange('A', 'Z', input, output, iIn, iOut))) {
+			iOut = shorthandFound;
 			iIn++;
 		// Digit range
-		} else if ((shorthand = copyRange('0', '9', input, output, iIn, iOut))) {
-			iOut = shorthand;
+		} else if ((shorthandFound = expandRange('0', '9', input, output, iIn, iOut))) {
+			iOut = shorthandFound;
 			iIn++;
 		// No shorthand, just copy character
 		} else
@@ -101,6 +112,4 @@ void expand(const char input[], char output[]) {
 	// Copy the last characters (including null terminator) as necessary
 	for (; iIn <= inLen; iIn++, iOut++)
 		output[iOut] = input[iIn];
-//	output[iOut + 1] = input[iIn + 1];
-//	output[iOut + 2] = '\0';
 }
