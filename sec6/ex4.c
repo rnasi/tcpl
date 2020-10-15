@@ -1,7 +1,8 @@
 // In a two’s complement number representation, our version of `itoa` does not handle the largest
-// negative number, that is, the value of n equal to -(2wordsize-1). Explain why not. Modify it 
-// to print that value correctly, regardless of themachine on which it runs. 
+// negative number, that is, the value of n equal to -(2^(wordsize-1)). Explain why not. Modify it 
+// to print that value correctly, regardless of the machine on which it runs. 
 //
+// ANSWER:
 //
 //   The two's complement system solves the problems of a one's complement system by subtracting 1 
 // after inverting all the digits to make a number negative. This has the result of disambiguating
@@ -30,21 +31,16 @@ int main() {
 	char intStr[MAX_SIZE];
 
 	itoa(3465, intStr);
-
 	printf("%s\n", intStr);
 
 	itoa(0, intStr);
-
 	printf("%s\n", intStr);
 
 	itoa(-65, intStr);
-
 	printf("%s\n", intStr);
 
 	itoa( (( (unsigned) ~0 ) >> 1) + 1, intStr);
-
 	printf("%s\n", intStr);
-
 
 	return 0;
 }
